@@ -1,0 +1,497 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="cathealthtrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Breed">
+          <Key>
+            <PropertyRef Name="BreedID" />
+          </Key>
+          <Property Name="BreedID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Breed" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Daylist">
+          <Key>
+            <PropertyRef Name="DayID" />
+          </Key>
+          <Property Name="DayID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Dayname" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Exerciselog">
+          <Key>
+            <PropertyRef Name="ExerciseID" />
+          </Key>
+          <Property Name="ExerciseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExerciseType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Duration" Type="int" Nullable="false" />
+          <Property Name="CaloriesBurn" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="DayID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Foodlist">
+          <Key>
+            <PropertyRef Name="FoodID" />
+          </Key>
+          <Property Name="FoodID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FoodType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FoodBrand" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Notes" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Foodlog">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FoodName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DayID" Type="int" Nullable="false" />
+          <Property Name="Calories" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="FoodID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Goallog">
+          <Key>
+            <PropertyRef Name="GoalID" />
+          </Key>
+          <Property Name="GoalID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GoalName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="GoalTime" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="BreedID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Exerciselog_DayID">
+          <End Role="Daylist" Type="Self.Daylist" Multiplicity="1" />
+          <End Role="Exerciselog" Type="Self.Exerciselog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Daylist">
+              <PropertyRef Name="DayID" />
+            </Principal>
+            <Dependent Role="Exerciselog">
+              <PropertyRef Name="DayID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exerciselog_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Exerciselog" Type="Self.Exerciselog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Exerciselog">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Foodlog_DayID">
+          <End Role="Daylist" Type="Self.Daylist" Multiplicity="1" />
+          <End Role="Foodlog" Type="Self.Foodlog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Daylist">
+              <PropertyRef Name="DayID" />
+            </Principal>
+            <Dependent Role="Foodlog">
+              <PropertyRef Name="DayID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Foodlog_FoodID">
+          <End Role="Foodlist" Type="Self.Foodlist" Multiplicity="1" />
+          <End Role="Foodlog" Type="Self.Foodlog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Foodlist">
+              <PropertyRef Name="FoodID" />
+            </Principal>
+            <Dependent Role="Foodlog">
+              <PropertyRef Name="FoodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Foodlog_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Foodlog" Type="Self.Foodlog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Foodlog">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Goallog_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Goallog" Type="Self.Goallog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Goallog">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_BreedID">
+          <End Role="Breed" Type="Self.Breed" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Breed">
+              <PropertyRef Name="BreedID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="BreedID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="cathealthtrackerModelStoreContainer">
+          <EntitySet Name="Breed" EntityType="Self.Breed" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Daylist" EntityType="Self.Daylist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exerciselog" EntityType="Self.Exerciselog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Foodlist" EntityType="Self.Foodlist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Foodlog" EntityType="Self.Foodlog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Goallog" EntityType="Self.Goallog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Exerciselog_DayID" Association="Self.FK_Exerciselog_DayID">
+            <End Role="Daylist" EntitySet="Daylist" />
+            <End Role="Exerciselog" EntitySet="Exerciselog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Exerciselog_UserID" Association="Self.FK_Exerciselog_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Exerciselog" EntitySet="Exerciselog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Foodlog_DayID" Association="Self.FK_Foodlog_DayID">
+            <End Role="Daylist" EntitySet="Daylist" />
+            <End Role="Foodlog" EntitySet="Foodlog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Foodlog_FoodID" Association="Self.FK_Foodlog_FoodID">
+            <End Role="Foodlist" EntitySet="Foodlist" />
+            <End Role="Foodlog" EntitySet="Foodlog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Foodlog_UserID" Association="Self.FK_Foodlog_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Foodlog" EntitySet="Foodlog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Goallog_UserID" Association="Self.FK_Goallog_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Goallog" EntitySet="Goallog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_BreedID" Association="Self.FK_User_BreedID">
+            <End Role="Breed" EntitySet="Breed" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="cathealthtrackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Breed">
+          <Key>
+            <PropertyRef Name="BreedID" />
+          </Key>
+          <Property Name="BreedID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Breed1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_BreedID" FromRole="Breed" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Daylist">
+          <Key>
+            <PropertyRef Name="DayID" />
+          </Key>
+          <Property Name="DayID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Dayname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Exerciselogs" Relationship="Self.FK_Exerciselog_DayID" FromRole="Daylist" ToRole="Exerciselog" />
+          <NavigationProperty Name="Foodlogs" Relationship="Self.FK_Foodlog_DayID" FromRole="Daylist" ToRole="Foodlog" />
+        </EntityType>
+        <EntityType Name="Exerciselog">
+          <Key>
+            <PropertyRef Name="ExerciseID" />
+          </Key>
+          <Property Name="ExerciseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExerciseType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Duration" Type="Int32" Nullable="false" />
+          <Property Name="CaloriesBurn" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="DayID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Daylist" Relationship="Self.FK_Exerciselog_DayID" FromRole="Exerciselog" ToRole="Daylist" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Exerciselog_UserID" FromRole="Exerciselog" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Foodlist">
+          <Key>
+            <PropertyRef Name="FoodID" />
+          </Key>
+          <Property Name="FoodID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FoodType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FoodBrand" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Notes" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Foodlogs" Relationship="Self.FK_Foodlog_FoodID" FromRole="Foodlist" ToRole="Foodlog" />
+        </EntityType>
+        <EntityType Name="Foodlog">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FoodName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DayID" Type="Int32" Nullable="false" />
+          <Property Name="Calories" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="FoodID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Daylist" Relationship="Self.FK_Foodlog_DayID" FromRole="Foodlog" ToRole="Daylist" />
+          <NavigationProperty Name="Foodlist" Relationship="Self.FK_Foodlog_FoodID" FromRole="Foodlog" ToRole="Foodlist" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Foodlog_UserID" FromRole="Foodlog" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Goallog">
+          <Key>
+            <PropertyRef Name="GoalID" />
+          </Key>
+          <Property Name="GoalID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GoalName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GoalTime" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Goallog_UserID" FromRole="Goallog" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BreedID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Breed" Relationship="Self.FK_User_BreedID" FromRole="Users" ToRole="Breed" />
+          <NavigationProperty Name="Exerciselogs" Relationship="Self.FK_Exerciselog_UserID" FromRole="Users" ToRole="Exerciselog" />
+          <NavigationProperty Name="Foodlogs" Relationship="Self.FK_Foodlog_UserID" FromRole="Users" ToRole="Foodlog" />
+          <NavigationProperty Name="Goallogs" Relationship="Self.FK_Goallog_UserID" FromRole="Users" ToRole="Goallog" />
+        </EntityType>
+        <Association Name="FK_User_BreedID">
+          <End Role="Breed" Type="Self.Breed" Multiplicity="1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Breed">
+              <PropertyRef Name="BreedID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="BreedID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exerciselog_DayID">
+          <End Role="Daylist" Type="Self.Daylist" Multiplicity="1" />
+          <End Role="Exerciselog" Type="Self.Exerciselog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Daylist">
+              <PropertyRef Name="DayID" />
+            </Principal>
+            <Dependent Role="Exerciselog">
+              <PropertyRef Name="DayID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Foodlog_DayID">
+          <End Role="Daylist" Type="Self.Daylist" Multiplicity="1" />
+          <End Role="Foodlog" Type="Self.Foodlog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Daylist">
+              <PropertyRef Name="DayID" />
+            </Principal>
+            <Dependent Role="Foodlog">
+              <PropertyRef Name="DayID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Exerciselog_UserID">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Exerciselog" Type="Self.Exerciselog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Exerciselog">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Foodlog_FoodID">
+          <End Role="Foodlist" Type="Self.Foodlist" Multiplicity="1" />
+          <End Role="Foodlog" Type="Self.Foodlog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Foodlist">
+              <PropertyRef Name="FoodID" />
+            </Principal>
+            <Dependent Role="Foodlog">
+              <PropertyRef Name="FoodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Foodlog_UserID">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Foodlog" Type="Self.Foodlog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Foodlog">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Goallog_UserID">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Goallog" Type="Self.Goallog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Goallog">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DefaultConnection" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Breeds" EntityType="Self.Breed" />
+          <EntitySet Name="Daylists" EntityType="Self.Daylist" />
+          <EntitySet Name="Exerciselogs" EntityType="Self.Exerciselog" />
+          <EntitySet Name="Foodlists" EntityType="Self.Foodlist" />
+          <EntitySet Name="Foodlogs" EntityType="Self.Foodlog" />
+          <EntitySet Name="Goallogs" EntityType="Self.Goallog" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_User_BreedID" Association="Self.FK_User_BreedID">
+            <End Role="Breed" EntitySet="Breeds" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Exerciselog_DayID" Association="Self.FK_Exerciselog_DayID">
+            <End Role="Daylist" EntitySet="Daylists" />
+            <End Role="Exerciselog" EntitySet="Exerciselogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Foodlog_DayID" Association="Self.FK_Foodlog_DayID">
+            <End Role="Daylist" EntitySet="Daylists" />
+            <End Role="Foodlog" EntitySet="Foodlogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Exerciselog_UserID" Association="Self.FK_Exerciselog_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Exerciselog" EntitySet="Exerciselogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Foodlog_FoodID" Association="Self.FK_Foodlog_FoodID">
+            <End Role="Foodlist" EntitySet="Foodlists" />
+            <End Role="Foodlog" EntitySet="Foodlogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Foodlog_UserID" Association="Self.FK_Foodlog_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Foodlog" EntitySet="Foodlogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Goallog_UserID" Association="Self.FK_Goallog_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Goallog" EntitySet="Goallogs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="cathealthtrackerModelStoreContainer" CdmEntityContainer="DefaultConnection">
+          <EntitySetMapping Name="Breeds">
+            <EntityTypeMapping TypeName="cathealthtrackerModel.Breed">
+              <MappingFragment StoreEntitySet="Breed">
+                <ScalarProperty Name="BreedID" ColumnName="BreedID" />
+                <ScalarProperty Name="Breed1" ColumnName="Breed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Daylists">
+            <EntityTypeMapping TypeName="cathealthtrackerModel.Daylist">
+              <MappingFragment StoreEntitySet="Daylist">
+                <ScalarProperty Name="DayID" ColumnName="DayID" />
+                <ScalarProperty Name="Dayname" ColumnName="Dayname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exerciselogs">
+            <EntityTypeMapping TypeName="cathealthtrackerModel.Exerciselog">
+              <MappingFragment StoreEntitySet="Exerciselog">
+                <ScalarProperty Name="ExerciseID" ColumnName="ExerciseID" />
+                <ScalarProperty Name="ExerciseType" ColumnName="ExerciseType" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="CaloriesBurn" ColumnName="CaloriesBurn" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="DayID" ColumnName="DayID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Foodlists">
+            <EntityTypeMapping TypeName="cathealthtrackerModel.Foodlist">
+              <MappingFragment StoreEntitySet="Foodlist">
+                <ScalarProperty Name="FoodID" ColumnName="FoodID" />
+                <ScalarProperty Name="FoodType" ColumnName="FoodType" />
+                <ScalarProperty Name="FoodBrand" ColumnName="FoodBrand" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Foodlogs">
+            <EntityTypeMapping TypeName="cathealthtrackerModel.Foodlog">
+              <MappingFragment StoreEntitySet="Foodlog">
+                <ScalarProperty Name="LogID" ColumnName="LogID" />
+                <ScalarProperty Name="FoodName" ColumnName="FoodName" />
+                <ScalarProperty Name="DayID" ColumnName="DayID" />
+                <ScalarProperty Name="Calories" ColumnName="Calories" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="FoodID" ColumnName="FoodID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Goallogs">
+            <EntityTypeMapping TypeName="cathealthtrackerModel.Goallog">
+              <MappingFragment StoreEntitySet="Goallog">
+                <ScalarProperty Name="GoalID" ColumnName="GoalID" />
+                <ScalarProperty Name="GoalName" ColumnName="GoalName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="GoalTime" ColumnName="GoalTime" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="cathealthtrackerModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="BreedID" ColumnName="BreedID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+    <siteMapNode url="default.aspx" title="Home"  description="homepage of cat health tracker">
+        <siteMapNode url="register.aspx" title="Register"  description="user register page" />
+        <siteMapNode url="login.aspx" title="Login"  description="user login page" />
+          <siteMapNode url="main.aspx" title="Main"  description="main page of registered user" />
+            <siteMapNode url="foodlog.aspx" title="Food Log"  description="food log page holds everyday user food in weekly basis" />
+              <siteMapNode url="foodlog-details.aspx" title="Food Log Details"  description="input form for food log" />
+            <siteMapNode url="exercise.aspx" title="Exercise Log"  description="Exercise log tracks everyday user exercise in weekly basis" />
+              <siteMapNode url="exercise-details.aspx" title="Exercise Log Details"  description="input form for exercise log" />
+            <siteMapNode url="goals.aspx" title="Goals log"  description="Goals log is a wishlist of diets or exercises user want" />
+              <siteMapNode url="goals-details.aspx" title="Goals Log Details"  description="input form for goals log" />
+            <siteMapNode url="foodlist.aspx" title="Food Reference"  description="a detail list of cat food as user reference" />
+              <siteMapNode url="foodlist-details.aspx" title="Food List Details"  description="input form for food list" />
+        <siteMapNode url="logout.aspx" title="Logout"  description="user logout page" />
+    </siteMapNode>
+</siteMap>
